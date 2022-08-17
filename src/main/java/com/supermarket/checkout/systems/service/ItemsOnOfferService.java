@@ -12,8 +12,8 @@ import java.util.TreeMap;
 @Service
 @Slf4j
 public class ItemsOnOfferService {
-    private List<ItemOnOffer> itemsOnOffers = new ArrayList<>();
-    private SortedMap<String, ItemOnOffer> itemsOnOfferMap = new TreeMap();
+    private final List<ItemOnOffer> itemsOnOffers = new ArrayList<>();
+    private final SortedMap<String, ItemOnOffer> itemsOnOfferMap = new TreeMap<>();
 
     public List<ItemOnOffer> add(ItemOnOffer itemOnOffer) {
         if(itemsOnOfferMap.isEmpty()) {
@@ -40,8 +40,8 @@ public class ItemsOnOfferService {
                 itemsOnOfferMap.put(itemOnOffer.getItemName(), itemOnOffer);
             } else {
                 if(itemsOnOfferMap.containsKey(itemOnOffer.getItemName())) {
-                    itemsOnOfferMap.get(itemOnOffer.getItemName()).setQuantity(
-                            itemsOnOfferMap.get(itemOnOffer.getItemName()).getQuantity() + itemOnOffer.getQuantity());
+                    itemsOnOfferMap.get(itemOnOffer.getItemName()).setQuantity(itemOnOffer.getQuantity());
+                    itemsOnOfferMap.get(itemOnOffer.getItemName()).setPrice(itemOnOffer.getPrice());
                 } else {
                     itemsOnOfferMap.put(itemOnOffer.getItemName(), itemOnOffer);
                 }
@@ -62,12 +62,24 @@ public class ItemsOnOfferService {
         return itemOnOffer;
     }
 
+    public List<ItemOnOffer> addItemsOnOffer(List<ItemOnOffer> itemsOnOffer) {
+        try {
+            log.info("Adding an item on offer , {} ", itemsOnOffer);
+            for (ItemOnOffer itemOnOffer : itemsOnOffer) {
+                updateItemOnOffer(itemOnOffer);
+            }
+        }  catch (Exception e) {
+            log.info("An error occurred while adding itemsOnOffer . Please try again. " + itemsOnOffer);
+        }
+        return getSortedItemsList();
+    }
+
     public boolean removeItemOnOffer(ItemOnOffer itemOnOffer) {
         boolean isRemoved = false;
         log.info("Called remove Item On Offer for {} ", itemOnOffer);
         try {
             if (itemsOnOffers.contains(itemOnOffer)) {
-                isRemoved = itemsOnOffers.remove(itemOnOffer);;
+                isRemoved = itemsOnOffers.remove(itemOnOffer);
             } else {
                 log.info("Could not find the item {} ", itemOnOffer);
             }

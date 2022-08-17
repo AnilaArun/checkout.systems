@@ -12,9 +12,9 @@ import java.util.List;
 @RestController
 @Slf4j
 public class SuperMarketCheckoutController {
-    private CheckoutService checkoutService;
-    private ItemsOnOfferService itemsOnOfferService;
-    private PriceCalculationService priceCalculationService;
+    private final CheckoutService checkoutService;
+    private final ItemsOnOfferService itemsOnOfferService;
+    private final PriceCalculationService priceCalculationService;
     public SuperMarketCheckoutController(CheckoutService checkoutService,
                                          ItemsOnOfferService itemsOnOfferService,
                                          PriceCalculationService priceCalculationService) {
@@ -33,6 +33,11 @@ public class SuperMarketCheckoutController {
                                          @PathVariable("quantity") int quantity,
                                          @PathVariable("price") double price) {
         return itemsOnOfferService.addItemOnOffer(new ItemOnOffer(itemName, quantity,price));
+    }
+
+    @PostMapping("/addItemsOnOffer")
+    public List<ItemOnOffer> addItemsOnOffers(@RequestBody List<ItemOnOffer> itemsOnOffer) {
+        return itemsOnOfferService.addItemsOnOffer(itemsOnOffer);
     }
     @PostMapping("/updateAnItemOnOffer/{name}/{quantity}/{price}")
     public ItemOnOffer updateItemOnOffer(@PathVariable("name") String itemName,

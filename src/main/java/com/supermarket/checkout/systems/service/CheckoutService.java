@@ -11,8 +11,8 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 public class CheckoutService {
-    private List<Item> items = new ArrayList<>();
-    private SortedMap<String, Item> itemsMap = new TreeMap<>();
+    private final List<Item> items = new ArrayList<>();
+    private final SortedMap<String, Item> itemsMap = new TreeMap<>();
     public List<Item> getAllItemsOnCart() {
         try {
             if (!items.isEmpty()) {
@@ -29,18 +29,17 @@ public class CheckoutService {
     public List<Item> removeItemsFromCart(List<Item> itemsToRemove) {
         try {
             if (!itemsMap.isEmpty()) {
-                for (int i = 0; i < itemsToRemove.size(); i++) {
-                    log.info("Items to remove . {} ", itemsToRemove.get(i));
-                    if (itemsMap.containsKey(itemsToRemove.get(i).getItemName())) {
-                        if (itemsToRemove.get(i).getItemQuantity() == itemsMap.get(itemsToRemove.get(i).getItemName())
+                for (Item value : itemsToRemove) {
+                    log.info("Items to remove . {} ", value);
+                    if (itemsMap.containsKey(value.getItemName())) {
+                        if (value.getItemQuantity() == itemsMap.get(value.getItemName())
                                 .getItemQuantity()) {
-                            itemsMap.remove(itemsToRemove.get(i).getItemName());
-                            items.remove(itemsToRemove.get(i));
+                            itemsMap.remove(value.getItemName());
+                            items.remove(value);
                         } else {
-                            Item item = itemsToRemove.get(i);
-                            itemsMap.get(item.getItemName())
-                                    .setItemQuantity(itemsMap.get(item.getItemName()).getItemQuantity() -
-                                            item.getItemQuantity());
+                            itemsMap.get(value.getItemName())
+                                    .setItemQuantity(itemsMap.get(value.getItemName()).getItemQuantity() -
+                                            value.getItemQuantity());
                         }
                     }
                 }
@@ -54,9 +53,9 @@ public class CheckoutService {
     }
     public List<Item> addOrUpdateItemToCart(List<Item> itemsToAdd) {
         try {
-            for (int i=0; i< itemsToAdd.size(); i++) {
-                log.info("Items to add . {} ", itemsToAdd.get(i));
-                addOrUpdateItemsToList(itemsToAdd.get(i));
+            for (Item item : itemsToAdd) {
+                log.info("Items to add . {} ", item);
+                addOrUpdateItemsToList(item);
             }
         }  catch (Exception e) {
             log.info("An error occurred while adding or updating cart . Please try again. " + e.getMessage());

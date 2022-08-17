@@ -4,6 +4,7 @@ import com.supermarket.checkout.systems.model.ItemOnOffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +36,18 @@ class ItemsOnOfferServiceTest {
         List<ItemOnOffer> itemsOnOffer= itemsOnOfferService.getAllItemsOnOffers();
         assertThat(itemsOnOffer.size()).isEqualTo(1);
         assertThat(itemOnOfferAfter.getQuantity()).isEqualTo(6);
+    }
+
+    @Test
+    void shouldAddANumberOfItemsOnOffer() {
+        List<ItemOnOffer> itemsOnOffer = new ArrayList<>();
+        ItemOnOffer itemBOnOffer = new ItemOnOffer("B", 2, 45);
+        itemsOnOffer.add(itemBOnOffer);
+        ItemOnOffer itemOnOffer = new ItemOnOffer("A", 3, 130);
+        itemsOnOffer.add(itemOnOffer);
+        List<ItemOnOffer> itemsOnOfferAfterAdding = itemsOnOfferService.addItemsOnOffer(itemsOnOffer);
+        assertThat(itemsOnOfferAfterAdding.size()).isEqualTo(2);
+        assertThat(itemsOnOfferAfterAdding.get(0).getItemName()).isEqualTo("A");
     }
 
     @Test

@@ -14,10 +14,24 @@ Command to run the JAR file from the jar location: `java -jar checkout.systems-0
 Once the project is started you can use  the following endpoints:
 
 ITEMS ON OFFER ENDPOINTS
-1. ADD ITEM ON OFFER : `http://localhost:8080/addAnItemOnOffer/A/1/50`
-2. REMOVE ITEM ON OFFER : `http://localhost:8080/removeAnItemOnOffer/A/2/130`
-3. UPDATE ITEM ON OFFER : `http://localhost:8080/updateAnItemOnOffer/A/2/130`
-4. GET ALL ITEMS ON OFFERS : `http://localhost:8080/getAllOffersOnItems`
+1. ADD AN ITEM ON OFFER : `http://localhost:8080/addAnItemOnOffer/A/1/50`
+2. ADD A LIST OF ITEMS ON OFFER : `http://localhost:8080/addItemsOnOffer` with body. 
+    example: `[
+   {
+   "itemName": "B",
+   "quantity": 2,
+   "price": 45.0
+   },
+   {
+   "itemName": "A",
+   "quantity": 3,
+   "price": 130.0
+   }
+   ]`
+3. REMOVE ITEM ON OFFER : `http://localhost:8080/removeAnItemOnOffer/A/2/130`
+4. UPDATE ITEM ON OFFER : `http://localhost:8080/updateAnItemOnOffer/A/2/130`
+5. GET ALL ITEMS ON OFFERS : `http://localhost:8080/getAllOffersOnItems`
+
 
 ITEMS ON CART ENDPOINTS
 1. ADD/UPDATE AN ITEM : POST `http://localhost:8080/addOrUpdateItem`  with body. Below is an example that can be provided as a body.

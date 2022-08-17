@@ -27,7 +27,6 @@ class SuperMarketCheckoutControllerTest {
     private CheckoutService checkoutService;
     @Mock
     private ItemsOnOfferService itemsOnOfferService;
-    private PriceCalculationService priceCalculationService;
     private SuperMarketCheckoutController controller;
     private List<ItemOnOffer> itemsOnOffers;
     private SortedMap<String, Item> itemsMap;
@@ -37,11 +36,11 @@ class SuperMarketCheckoutControllerTest {
     public void setUp() {
         itemsOnOffers = new ArrayList<>();
         itemsMap = new TreeMap<>();
-        itemsOnOfferMap = new TreeMap();
-        priceCalculationService = new PriceCalculationService(checkoutService, itemsOnOfferService);
+        itemsOnOfferMap = new TreeMap<>();
+        PriceCalculationService priceCalculationService = new PriceCalculationService(checkoutService, itemsOnOfferService);
         controller = new SuperMarketCheckoutController(checkoutService,
                                                        itemsOnOfferService,
-                                                       priceCalculationService);
+                priceCalculationService);
     }
 
     @Test
@@ -54,6 +53,24 @@ class SuperMarketCheckoutControllerTest {
         List<ItemOnOffer> itemsOnOffer = controller.getAllOffersOnItems();
 
         assertThat(itemsOnOffer).isEqualTo(itemsOnOffers);
+    }
+
+    @Test
+    public void shouldAddAnItemsOnOffer() {
+        ItemOnOffer itemOnOffer = new ItemOnOffer("B", 2, 45.0);
+        when(itemsOnOfferService.addItemOnOffer(itemOnOffer)).thenReturn(itemOnOffer);
+        ItemOnOffer itemOnOfferAdded = controller.addItemOnOffer("B", 2, 45.0);
+        assertThat(itemOnOfferAdded).isEqualTo(itemOnOffer);
+    }
+    @Test
+    public void shouldAddAListOfItemsOnOffer() {
+        itemsOnOffers.add(new ItemOnOffer("A", 3, 150));
+        itemsOnOffers.add(new ItemOnOffer("B", 2, 45));
+        when(itemsOnOfferService.addItemsOnOffer(itemsOnOffers)).thenReturn(itemsOnOffers);
+        List<ItemOnOffer> itemsOnOfferAfterAdding = controller.addItemsOnOffers(itemsOnOffers);
+
+        assertThat(itemsOnOffers.size()).isEqualTo(2);
+        assertThat(itemsOnOfferAfterAdding).isEqualTo(itemsOnOffers);
     }
 
     @Test
